@@ -1,49 +1,46 @@
 defmodule Acceptance.FencedCodeBlocksTest do
   use ExUnit.Case
 
-  def options(code_class_prefix) do
-    %Earmark.Options{code_class_prefix: code_class_prefix}
+  import Support.Helpers, only: [as_html: 1, as_html: 2]
+
+  setup do
+    {:ok, messages: []}
   end
 
   describe "Fenced code blocks" do
-    test "no lang" do
+    test "no lang", %{messages: messages} do
       markdown = "```\n<\n >\n```\n"
       html     = "<pre><code class=\"\">&lt;\n &gt;</code></pre>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "still no lang" do
+    test "still no lang", %{messages: messages} do
       markdown = "~~~\n<\n >\n~~~\n"
       html     = "<pre><code class=\"\">&lt;\n &gt;</code></pre>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "elixir 's the name" do
+    test "elixir 's the name", %{messages: messages} do
       markdown = "```elixir\naaa\n~~~\n```\n"
       html     = "<pre><code class=\"elixir\">aaa\n~~~</code></pre>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "with a code_class_prefix" do
+    test "with a code_class_prefix", %{messages: messages} do
       markdown = "```elixir\naaa\n~~~\n```\n"
       html     = "<pre><code class=\"elixir lang-elixir\">aaa\n~~~</code></pre>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown, options("lang-")) == {html, messages}
+      assert as_html(markdown, code_class_prefix: "lang-") == {html, messages}
     end
 
-    test "look mam, more lines" do
+    test "look mam, more lines", %{messages: messages} do
       markdown = "   ```\naaa\nb\n  ```\n"
       html     = "<pre><code class=\"\">aaa\nb</code></pre>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
   end

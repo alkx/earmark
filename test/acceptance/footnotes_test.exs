@@ -3,6 +3,7 @@ defmodule Acceptance.FootnotesTest do
 
   import Support.Helpers, only: [ as_html: 2]
 
+
   describe "Footnotes" do
 
     test "without errors" do

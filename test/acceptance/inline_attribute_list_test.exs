@@ -3,12 +3,30 @@ defmodule Acceptance.InlineAttributeListTest do
 
   import Support.Helpers, only: [as_html: 1]
 
+  setup do
+    {:ok, messages: []}
+  end
+
+
   describe "IAL" do
 
-    test "Not associated" do
+    test "Not associated", %{messages: messages} do
       markdown = "{:hello=world}"
       html     = "<p>{:hello=world}</p>\n"
-      messages = []
+
+      assert as_html(markdown) == {html, messages}
+    end
+
+    test "Associated", %{messages: messages} do
+      markdown = "Before\n{:hello=world}"
+      html     = "<p hello=\"world\">Before</p>\n"
+
+      assert as_html(markdown) == {html, messages}
+    end
+
+    test "Associated in between", %{messages: messages} do
+      markdown = "Before\n{:hello=world}\nAfter"
+      html     = "<p hello=\"world\">Before</p>\n<p>After</p>\n"
 
       assert as_html(markdown) == {html, messages}
     end
@@ -17,22 +35,6 @@ defmodule Acceptance.InlineAttributeListTest do
       markdown = "{:hello}"
       html     = "<p>{:hello}</p>\n"
       messages = [{:warning, 1, "Illegal attributes [\"hello\"] ignored in IAL" }]
-
-      assert as_html(markdown) == {html, messages}
-    end
-
-    test "Associated" do
-      markdown = "Before\n{:hello=world}"
-      html     = "<p hello=\"world\">Before</p>\n"
-      messages = []
-
-      assert as_html(markdown) == {html, messages}
-    end
-
-    test "Associated in between" do
-      markdown = "Before\n{:hello=world}\nAfter"
-      html     = "<p hello=\"world\">Before</p>\n<p>After</p>\n"
-      messages = []
 
       assert as_html(markdown) == {html, messages}
     end

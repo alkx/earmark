@@ -1,29 +1,32 @@
 defmodule Acceptance.SetextHeadersTest do
   use ExUnit.Case
 
+  import Support.Helpers, only: [as_html: 1]
+
+  setup do
+    {:ok, messages: []}
+  end
+
   describe "Setext headers" do
 
-    test "levels one and two" do
+    test "levels one and two", %{messages: messages} do
       markdown = "Foo *bar*\n=========\n\nFoo *bar*\n---------\n"
       html     = "<h1>Foo <em>bar</em></h1>\n<h2>Foo <em>bar</em></h2>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "and levels two and one" do
+    test "and levels two and one", %{messages: messages} do
       markdown = "Foo\n-------------------------\n\nFoo\n=\n"
       html     = "<h2>Foo</h2>\n<h1>Foo</h1>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "narrow escape" do
+    test "narrow escape", %{messages: messages} do
       markdown = "Foo\\\n----\n"
       html = "<h2>Foo\\</h2>\n"
-      messages = []
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
   end

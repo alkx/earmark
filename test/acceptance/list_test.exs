@@ -1,109 +1,102 @@
 defmodule Acceptance.ListTest do
   use ExUnit.Case
 
+  import Support.Helpers, only: [as_html: 1]
+
+  setup do
+    {:ok, messages: []}
+  end
+
   describe "List items" do
-    test "Numbered" do
+    test "Numbered", %{messages: messages} do
       markdown = "1.  A paragraph\n    with two lines.\n\n        indented code\n\n    > A block quote.\n"
       html     = "<ol>\n<li><p>A paragraph\nwith two lines.</p>\n<pre><code>indented code</code></pre>\n<blockquote><p>A block quote.</p>\n</blockquote>\n</li>\n</ol>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "More numbers" do
+    test "More numbers", %{messages: messages} do
       markdown = "1.  space one\n\n1. space two"
       html     = "<ol>\n<li><p>space one</p>\n</li>\n<li><p>space two</p>\n</li>\n</ol>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "can't count" do
+    test "can't count", %{messages: messages} do
       markdown = "- one\n\n two\n"
       html     = "<ul>\n<li>one\n</li>\n</ul>\n<p> two</p>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "still not" do
+    test "still not", %{messages: messages} do
       markdown = "- one\n- two"
       html     = "<ul>\n<li>one\n</li>\n<li>two\n</li>\n</ul>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "the second one is not one" do
+    test "the second one is not one", %{messages: messages} do
       markdown = "1. one\n1. two"
       html     = "<ol>\n<li>one\n</li>\n<li>two\n</li>\n</ol>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "where shall we start" do
+    test "where shall we start", %{messages: messages} do
       markdown = "2. one\n3. two"
       html = "<ol start=\"2\">\n<li>one\n</li>\n<li>two\n</li>\n</ol>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "one?" do
+    test "one?", %{messages: messages} do
       markdown = "2. one"
       html     = "<ol start=\"2\">\n<li>one\n</li>\n</ol>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "count or no count?" do
+    test "count or no count?", %{messages: messages} do
       markdown = "-one\n\n2.two\n"
       html     = "<p>-one</p>\n<p>2.two</p>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "list or no list?" do
+    test "list or no list?", %{messages: messages} do
       markdown = "-1. not ok\n"
       html     = "<p>-1. not ok</p>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "no count or count?" do
+    test "no count or count?", %{messages: messages} do
       markdown = "1. foo\nbar"
       html     = "<ol>\n<li>foo\nbar\n</li>\n</ol>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "where does it end?" do
+    test "where does it end?", %{messages: messages} do
       markdown = "* a\n    b\nc"
       html     = "<ul>\n<li>a\nb\nc\n</li>\n</ul>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "tables in lists? Maybe not" do
+    test "tables in lists? Maybe not", %{messages: messages} do
       markdown = "* x\n    a\n| A | B |"
       html     = "<ul>\n<li>x\na\n| A | B |\n</li>\n</ul>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
-    test "nice try, but naah" do
+    test "nice try, but naah", %{messages: messages} do
       markdown = "* x\n | A | B |"
       html     = "<ul>\n<li>x\n | A | B |\n</li>\n</ul>\n"
-      messages = []
 
-      assert Earmark.as_html(markdown) == {html, messages}
+      assert as_html(markdown) == {html, messages}
     end
 
   end

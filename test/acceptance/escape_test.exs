@@ -3,11 +3,16 @@ defmodule Acceptance.EscapeTest do
 
   import Support.Helpers, only: [as_html: 1, as_html: 2]
 
+  setup do
+    {:ok, messages: []}
+  end
+
+
   describe "Escapes" do
-    test "dizzy?" do
+
+    test "dizzy?", %{messages: messages} do
       markdown = "\\\\!\\\\\""
       html     = "<p>\\!\\“</p>\n"
-      messages = []
 
       assert as_html(markdown, smartypants: true) == {html, messages}
 
@@ -15,27 +20,30 @@ defmodule Acceptance.EscapeTest do
       assert as_html(markdown, smartypants: false) == {html, messages}
     end
 
-    test "obviously" do
+    test "obviously", %{messages: messages} do
       markdown = "\\`no code"
       html     = "<p>`no code</p>\n"
-      messages = []
 
       assert as_html(markdown) == {html, messages}
     end
 
-    test "less obviously - escpe the escapes" do
+    test "less obviously - escpe the escapes", %{messages: messages} do
       markdown = "\\\\` code`"
       html     = "<p>\\<code class=\"inline\">code</code></p>\n"
-      messages = []
 
       assert as_html(markdown) == {html, messages}
     end
 
-    test "don't ask me" do
+    test "don't ask me", %{messages: messages} do
       markdown = "\\\\ \\"
       html     = "<p>\\ \\</p>\n"
-      messages = []
 
+      assert as_html(markdown) == {html, messages}
+    end
+
+    test "let us escape (again)", %{messages: messages} do
+      markdown = "\\\\*emphasis*\n"
+      html = "<p>\\<em>emphasis</em></p>\n"
       assert as_html(markdown) == {html, messages}
     end
 
@@ -47,11 +55,5 @@ defmodule Acceptance.EscapeTest do
       assert as_html(markdown, smartypants: false) == {html, messages}
     end
 
-    test "let us escape (again)" do
-      markdown = "\\\\*emphasis*\n"
-      html = "<p>\\<em>emphasis</em></p>\n"
-      messages = []
-      assert as_html(markdown) == {html, messages}
-    end
   end
 end
