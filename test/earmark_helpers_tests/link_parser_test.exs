@@ -3,7 +3,7 @@ defmodule EarmarkHelpersTests.LinkParserTest do
 
   alias Earmark.Helpers.LinkParser
 
-  # describe "text part" do
+  describe "text part" do
     test "text part: empty" do
       assert {~s<[]()>, "", "", nil} == LinkParser.parse_link("[]()")
     end
@@ -32,9 +32,9 @@ defmodule EarmarkHelpersTests.LinkParserTest do
     test "text part: missing closing brackets" do
       assert nil ==  LinkParser.parse_link("[pre[[in\\]side])]")
     end
-  # end
+  end
 
-  # describe "url part" do
+  describe "url part" do
     test "url part: incorrect" do
       assert nil == LinkParser.parse_link("[](")
       assert nil == LinkParser.parse_link("[text](url")
@@ -63,9 +63,9 @@ defmodule EarmarkHelpersTests.LinkParserTest do
     test "url part: missing closing parens" do
       assert nil ==  LinkParser.parse_link("[text](")
     end
-  # end
+  end
 
-  # describe "url part with title" do
+  describe "url part with title" do
     test "url part with title: simple url" do
       assert {~s<[text](url 'title')>, ~s<text>, ~s<url>, ~s<title>} == LinkParser.parse_link("[text](url 'title')")
       assert {~s<[text](url  "title")>, ~s<text>, ~s<url>, ~s<title>} == LinkParser.parse_link(~s<[text](url  "title")>)
@@ -75,9 +75,9 @@ defmodule EarmarkHelpersTests.LinkParserTest do
       assert {~s<[text](url "(title")>, ~s<text>, ~s<url>, ~s<(title>} == LinkParser.parse_link(~s<[text](url "(title")>)
       assert {~s<[text](url "tit)le")>, ~s<text>, ~s<url>, ~s<tit)le>} == LinkParser.parse_link(~s<[text](url "tit)le")>)
     end
-  # end
+  end
 
-  # describe "deprecate in v1.1, remove in v1.2" do
+  describe "deprecate in v1.1, remove in v1.2" do
     test "deprecated:  remove in v1.2" do
       assert {~s<[text](url "title')>, ~s<text>, ~s<url>, ~s<title>} == LinkParser.parse_link(~s<[text](url "title')>)
       assert {~s<[text](url 'title")>, ~s<text>, ~s<url>, ~s<title>} == LinkParser.parse_link(~s<[text](url 'title")>)
@@ -88,9 +88,9 @@ defmodule EarmarkHelpersTests.LinkParserTest do
       assert {~s<[text](url "title\\')>, ~s<text>, ~s<url>, ~s<title\\>} == LinkParser.parse_link(~s<[text](url "title\\')>)
       assert {~s<[text](url 'title\\")>, ~s<text>, ~s<url>, ~s<title\\>} == LinkParser.parse_link(~s<[text](url 'title\\")>)
     end
-  # end
+  end
 
-  # describe "url no title" do
+  describe "url no title" do
     test "url no title: missing space" do
       assert {~s<[text](url'title')>, ~s<text>, ~s<url'title'>, nil} == LinkParser.parse_link("[text](url'title')")
       assert {~s<[text](url"title")>, ~s<text>, ~s<url"title">, nil} == LinkParser.parse_link(~s<[text](url"title")>)
@@ -102,6 +102,6 @@ defmodule EarmarkHelpersTests.LinkParserTest do
     test "url no title: missing second quote" do
       assert {~s<[text](url "title)>, ~s<text>, ~s<url "title>, nil} == LinkParser.parse_link(~s<[text](url "title)>)
     end
-  # end
+  end
 
 end

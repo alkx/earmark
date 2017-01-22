@@ -1,7 +1,7 @@
 defmodule Regressions.I88AnchorLinksInsideParensTest do
   use ExUnit.Case
 
-  # describe "parens" do
+  describe "parens" do
     test "parens: minimal case" do
       result = Earmark.as_html!("([]())")
       assert "<p>(<a href=\"\"></a>)</p>\n" == result
@@ -29,5 +29,5 @@ defmodule Regressions.I88AnchorLinksInsideParensTest do
       result = Earmark.as_html!( "![text](src 'title')still title'))" )
       assert ~s{<p><img src="src" alt="text" title="title&#39;)still title"/>)</p>\n} == result
     end
-  # end
+  end
 end
